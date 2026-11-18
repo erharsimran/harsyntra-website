@@ -1,0 +1,61 @@
+# Deploy the Harsyntra marketing site (www.harsyntra.com).
+#
+# How it works: every push to main copies index.html to the VPS, where
+# nginx serves it from /var/www/harsyntra-site. No build step, no restart
+# — nginx serves the file straight from disk.
+#
+# Required repo secrets (Settings -> Secrets and variables -> Actions),
+# same values as the Roster app repos:
+#   DEPLOY_HOST     - VPS host (IP)
+#   DEPLOY_USER     - SSH user
+#   DEPLOY_PASSWORD - SSH password
+#
+# One-time server setup (not part of this workflow): DNS A record `www`
+# -> VPS IP, nginx server block for www.harsyntra.com serving
+# /var/www/harsyntra-site, and a Let's Encrypt cert
+# (certbot --nginx -d www.harsyntra.com -d harsyntra.com).
+name: Deploy Harsyntra Website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-harsyntra-website
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy site to VPS
+    runs-on: ubuntu-latest
+    environment: Dev
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare site directory on server
+        uses: appleboy/ssh-action@c4f70287fc37c43b14b30b407224bbbc8e8c6327 # pinned: master @ 2026-08-16
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          port: 22
+          script: |
+            set -euo pipefail
+            mkdir -p /var/www/harsyntra-site
+
+      - name: Copy index.html to server
+        uses: appleboy/scp-action@7e85c2e09aa21988492acd66466b5d68bda49e2b # pinned: master @ 2026-08-09
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          port: 22
+          source: "index.html"
+          target: "/var/www/harsyntra-site"
