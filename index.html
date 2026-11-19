@@ -335,8 +335,10 @@
       .mx-shift.ot.selected { background: var(--navy); color: #fff; border-color: var(--navy); }
       .mx-unavail {
         width: 100%; min-height: 44px; background: #fafbfb; border: 1.5px dashed #d5dce1; border-radius: 8px;
-        color: #7d8fa0; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; padding: 6px 8px;
+        color: #7d8fa0; font-size: 8.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 3px; padding: 6px 3px;
+        letter-spacing: -.03em; white-space: nowrap; overflow: hidden;
       }
+      .mx-unavail svg { width: 11px; height: 11px; }
       .mx-unavail:hover { border-color: var(--amber); color: #7c5205; }
       .mx-unavail.selected { border-color: var(--navy); color: var(--navy-ink); background: #eef3f6; }
       .mx-add {
@@ -631,7 +633,9 @@
         .mx-emp b { font-size: 11.5px; }
         .mx-emp .eh { display: none; }
         .mx-shift, .mx-unavail, .mx-add, .mx-closed { min-height: 38px; }
-        .mx-shift, .mx-unavail { font-size: 4px; padding: 0; border-radius: 2px; }
+        .mx-shift, .mx-unavail { font-size: 10px; padding: 4px 5px; border-radius: 6px; }
+        .mx-unavail { font-size: 7.5px; padding: 4px 2px; gap: 2px; }
+        .mx-unavail svg { width: 9px; height: 9px; }
         .mx-cov { min-height: 44px; }
         .mx-covlabel span { display: none; }
         .mx-covlabel { font-size: 9px; }
