@@ -6,12 +6,14 @@ Harsyntra, workforce scheduling, time tracking, and labor cost analysis for hour
 ## What is in this repo
 
 - `index.html` — the whole site, one self-contained static file (assets inlined).
+- `robots.txt`, `sitemap.xml` — for search engines.
 - `.github/workflows/deploy.yml` — deploys to the VPS on every push to `main`.
 
 ## Deploy
 
-Every push to `main` copies `index.html` to `/var/www/harsyntra-site/` on the VPS,
-where nginx serves it as www.harsyntra.com. No build step, nothing to restart.
+Every push to `main` copies `index.html`, `robots.txt`, and `sitemap.xml` to
+`/var/www/harsyntra-site/` on the VPS, where nginx serves it as
+www.harsyntra.com. No build step, nothing to restart.
 
 Required repo secrets (Settings → Secrets and variables → Actions), same values
 as the Roster app repos:
